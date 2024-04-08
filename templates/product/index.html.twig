@@ -4,6 +4,9 @@
 
 {% block body %}
     <div class="container">
+
+        <a class="nav-link text-primary mx-3" href="{{ path('app_cart') }}">Cart</a>
+
         <h1>Product index</h1>
 
         <table class="table">
@@ -25,12 +28,13 @@
                     <td>{{ product.price }}</td>
                     <td>
                         {% set qrCode = product.qrcode %}
-                        <img src="{{ qrCode }}"  />
+                        <img src="{{ qrCode }}" width="100px" />
                     </td>
 
                     <td>
                         <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary">show</a>
                         <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-outline-primary" >edit</a>
+                        <a href="{{ path('addtocart', {id: product.id}) }}" class="btn btn-info ms-5" >Add to cart</a>
                     </td>
                 </tr>
             {% else %}
