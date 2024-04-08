@@ -133,6 +133,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bacon/bacon-qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dasprid/enum" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/endroid/installer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/endroid/qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/endroid/qr-code-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/clock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lexik/jwt-authentication-bundle" />
