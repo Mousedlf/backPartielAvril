@@ -23,7 +23,10 @@
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
-                    <td>{{ product.qrcode }}</td>
+                    <td>
+                        {% set qrCode = product.qrcode %}
+                        <img src="{{ qrCode }}"  />
+                    </td>
 
                     <td>
                         <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary">show</a>
