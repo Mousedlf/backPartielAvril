@@ -7,15 +7,16 @@ use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Service\QrCodeGenerator;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/product')]
 class ProductController extends AbstractController
 {
-    #[Route('s', name: 'app_product_index', methods: ['GET'])]
+    #[Route('/admin/products', name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
         return $this->render('product/index.html.twig', [
@@ -23,7 +24,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/product/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, QrCodeGenerator $qrCodeGenerator): Response
     {
         $product = new Product();
@@ -49,7 +50,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
+    #[Route('/admin/product/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
@@ -57,7 +58,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/product/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, QrCodeGenerator $qrCodeGenerator): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -65,7 +66,7 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $qrcode = $qrCodeGenerator->createQrCode($product->getName());
+            $qrcode = $qrCodeGenerator->createQrCode($product->getId());
             $product->setQrcode($qrcode);
 
             $entityManager->flush();
@@ -79,7 +80,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_product_delete', methods: ['POST'])]
+    #[Route('/admin/product/{id}', name: 'app_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->getPayload()->get('_token'))) {
@@ -91,13 +92,14 @@ class ProductController extends AbstractController
     }
 
 
-    #[Route('/findby/qrcode/{name}', name: 'match_qrcode_toproduct', methods: ['GET'])]
+    #[Route('/api/findby/qrcode/{id}', name: 'match_qrcode_toproduct', methods: ['GET'])]
     public function matchQrCodeToProduct(
         ProductRepository $productRepository,
         Product $product): Response
     {
-        $matchingProduct = $productRepository->findOneBy(['name' => $product->getName()]);
-        return $this->json($matchingProduct, 200);
+        $matchingProduct = $productRepository->findOneBy(['id' => $product->getId()]);
+        return $this->json($matchingProduct, 200, [], ['groups' => ['getProductWithQrCode']]);
     }
+
 
 }

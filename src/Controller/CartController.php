@@ -10,25 +10,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 
-#[Route('/cart')]
+#[Route('/api/cart')]
 class CartController extends AbstractController
 {
 
-    #[Route('/', name: 'app_cart')]
+    #[Route('', name: 'app_cart')]
     public function index(CartService $cartService): Response
     {
 
-        return $this->render('cart/index.html.twig', [
+/*        return $this->render('cart/index.html.twig', [
             'cart'=>$cartService->getCart(),
             'total'=>$cartService->getTotal()
-        ]);
+        ]);*/
 
-        /*$response = [
+        $response = [
             'cart' => $cartService->getCart(),
             'total' => $cartService->getTotal(),
         ];
 
-        return $this->json($response, 200);*/
+        return $this->json($response, 200);
     }
 
     #[Route('/add/{id}/{quantity}', name: 'addtocart', methods: ['GET'])]
@@ -44,8 +44,9 @@ class CartController extends AbstractController
             $redirection= 'app_cart';
         }
 
+        //return $this->redirectToRoute($redirection);
+        return $this->json("added to cart", 200);
 
-        return $this->redirectToRoute($redirection);
     }
 
 
@@ -53,20 +54,25 @@ class CartController extends AbstractController
     public function removeRow(CartService $cartService, Product $product): Response
     {
         $cartService->removeRow($product);
-        return $this->redirectToRoute('app_cart');
+        //return $this->redirectToRoute('app_cart');
+        return $this->json('row removed from cart', 200);
+
     }
 
     #[Route('/removeone/{id}', name: 'removeone_cart', methods: ['GET'])]
     public function removeOne(CartService $cartService, Product $product): Response
     {
         $cartService->removeOne($product);
-        return $this->redirectToRoute('app_cart');
+     //   return $this->redirectToRoute('app_cart');
+        return $this->json('remove one product from cart', 200);
+
     }
     #[Route('/empty', name: 'empty_cart', methods: ['GET'])]
     public function empty(CartService $cartService): Response
     {
         $cartService->empty();
-        return $this->redirectToRoute('app_cart');
+       // return $this->redirectToRoute('app_cart');
+        return $this->json('empty cart', 200);
     }
 
 

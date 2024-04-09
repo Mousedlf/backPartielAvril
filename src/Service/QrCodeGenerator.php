@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class QrCodeGenerator
 {
-    public function createQrCode($name)
+    public function createQrCode($id)
     {
         $writer = new PngWriter();
-        $qrCode = QrCode::create($name)
+        $qrCode = QrCode::create($id)
             ->setEncoding(new Encoding('UTF-8'))
             ->setSize(120)
             ->setForegroundColor(new Color(0, 0, 0))

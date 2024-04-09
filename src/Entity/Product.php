@@ -14,15 +14,15 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["myOrders"])]
+    #[Groups(["myOrders", "getProductWithQrCode"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["myOrders"])]
+    #[Groups(["myOrders", "getProductWithQrCode"])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(["myOrders"])]
+    #[Groups(["myOrders", "getProductWithQrCode"])]
     private ?float $price = null;
 
     #[ORM\Column(length: 1500)]
@@ -39,6 +39,7 @@ class Product
      * @var Collection<int, Image>
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'product')]
+    #[Groups(["myOrders", "getProductWithQrCode"])]
     private Collection $images;
 
     public function __construct()

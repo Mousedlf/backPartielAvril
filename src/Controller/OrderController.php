@@ -25,11 +25,11 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/orders', name: 'app_order_profile')] //ajout /api
+    #[Route('/api/{id}/orders', name: 'app_order_profile')] //ajout /api
     public function indexProfileOrders(Profile $profile): Response
     {
         $orders = $profile->getOrders();
-        dd($orders);
+        //dd($orders);
 
         return $this->json($orders, 200, [], ['groups' => ['myOrders']]);
     }
@@ -52,7 +52,7 @@ class OrderController extends AbstractController
     }
 
 
-    #[Route('/order/save', name: 'order_save')]
+    #[Route('/order/save', name: 'order_save', priority: 2)]
     public function saveOrder(
         CartService $cartService,
         EntityManagerInterface $manager,
