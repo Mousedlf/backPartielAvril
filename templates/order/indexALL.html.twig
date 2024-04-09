@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+      <a href="{{ path('app_home') }}">Return to home</a>
+
+
+      <h1>Orders</h1>
+      <table class="table">
+          <thead>
+          <tr>
+              <th>Id</th>
+              <th>Profile</th>
+              <th>total</th>
+              <th>status</th>
+
+              <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for order in orders %}
+              <tr>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.byProfile.username }}</td>
+                  <td>{{ order.total }} €</td>
+
+                  <td>
+                      {% if order.paid == 1  %}
+                      <p>paid</p>
+                      {% else %}
+                          <p>not paid</p>
+                          {% endif %}
+                  </td>
+                  <td>
+                      <a href="{{ path('app_order_show', {id:order.id}) }}" class="btn btn-outline-primary">See order</a>
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+  </div>
+
+
+
+{% endblock %}

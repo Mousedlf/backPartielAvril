@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}QUACK | Hello CartController!{% endblock %}
+{% block title %}Cart{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -13,6 +13,10 @@
                     <th scope="col">Name</th>
                     <th scope="col">Price</th>
                     <th scope="col">QR code</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+
 
                 </tr>
                 </thead>
@@ -22,10 +26,33 @@
                         <td>{{ item.product.name }}</td>
                         <td>{{ item.product.price }} €</td>
                         <td>beau Qrcode</td>
+                        <td>
+                            <p>{{ item.quantity }}</p>
+                            <a href="{{ path('removeone_cart', {id:item.product.id}) }}" class="btn btn-primary">-</a>
+                            <a href="{{ path('addfromcart', {id:item.product.id, quantity:1}) }}" class="btn btn-primary">+</a>
+                        </td>
+                        <td>{{ item.product.price * item.quantity }} €</td>
+                        <td>
+                            <a href="{{ path('removerow_cart', {id:item.product.id}) }}" class="btn btn-danger">X</a>
+                        </td>
+
                     </tr>
                 {% endfor %}
+                <tr class="table-primary">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td>{# Count : {{ usercart.count() }}#}</td>
+                    <td>Total : {{ total }} €</td>
+                    <td></td>
+                </tr>
                 </tbody>
             </table>
+        <div class="d-flex justify-content-between mb-5">
+            <a href="{{ path('empty_cart') }}" class="btn btn-outline-danger">Empty cart</a>
+            <a href="{{ path('order_payment') }}" class="btn btn-primary">Make order</a>
+        </div>
 
 
     </div>

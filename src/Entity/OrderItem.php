@@ -17,9 +17,12 @@ class OrderItem
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $Product = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orderItems')]
+    #[ORM\ManyToOne(inversedBy: 'orderItems', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $ofOrder = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $quantity = null;
 
     public function getId(): ?int
     {
@@ -46,6 +49,18 @@ class OrderItem
     public function setOfOrder(?Order $ofOrder): static
     {
         $this->ofOrder = $ofOrder;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

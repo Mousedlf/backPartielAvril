@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/product')]
+#[Route('/admin/product')]
 class ProductController extends AbstractController
 {
-    #[Route('/', name: 'app_product_index', methods: ['GET'])]
+    #[Route('s', name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
         return $this->render('product/index.html.twig', [
@@ -91,6 +91,13 @@ class ProductController extends AbstractController
     }
 
 
-    // route match Product name found with QrCode to a Porduct in DB.
+    #[Route('/findby/qrcode/{name}', name: 'match_qrcode_toproduct', methods: ['GET'])]
+    public function matchQrCodeToProduct(
+        ProductRepository $productRepository,
+        Product $product): Response
+    {
+        $matchingProduct = $productRepository->findOneBy(['name' => $product->getName()]);
+        return $this->json($matchingProduct, 200);
+    }
 
 }

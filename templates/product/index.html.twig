@@ -34,7 +34,7 @@
                     <td>
                         <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary">show</a>
                         <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-outline-primary" >edit</a>
-                        <a href="{{ path('addtocart', {id: product.id}) }}" class="btn btn-info ms-5" >Add to cart</a>
+                        <a href="{{ path('addtocart', {id: product.id, quantity: 1}) }}" class="btn btn-info ms-5" >Add to cart</a>
                     </td>
                 </tr>
             {% else %}

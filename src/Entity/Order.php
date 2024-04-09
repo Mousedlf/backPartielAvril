@@ -23,11 +23,17 @@ class Order
     /**
      * @var Collection<int, OrderItem>
      */
-    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'ofOrder')]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'ofOrder', cascade: ["persist"])]
     private Collection $orderItems;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $total = null;
+
+    #[ORM\Column]
+    private ?bool $paid = false;
 
     public function __construct()
     {
@@ -89,6 +95,30 @@ class Order
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(?float $total): static
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    public function isPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): static
+    {
+        $this->paid = $paid;
 
         return $this;
     }

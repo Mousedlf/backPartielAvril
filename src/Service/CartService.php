@@ -17,37 +17,89 @@ class CartService
         $this->session = $requestStack->getSession();
     }
 
-
     public function getCart(){
         $cart= $this->session->get('sessionCart', []);
         $entityCart = [];
 
-        foreach($cart as $productId){
+        foreach($cart as $productId=>$quantity){
             $item = [
                 'product' => $this->productRepository->find($productId),
+                'quantity'=>$quantity
             ];
 
             $entityCart[]=$item;
         }
-        https://gitlab.esdlyon.dev/mousedlf/partiel-avril
-       // dd($entityCart);
 
         return $entityCart;
     }
 
 
-    public function addProduct(Product $product){
+    public function addProduct(Product $product, $quantity){
+
         $cart = $this->session->get('sessionCart', []);
-        //lala
 
         if(isset($cart[$product->getId()])){
-            $cart[$product->getId()] = $cart[$product->getId()];
+            $cart[$product->getId()] = $cart[$product->getId()] + $quantity;
+        } else{
+            $cart[$product->getId()] = $quantity;
         }
-
-        dd($cart);
 
         $this->session->set('sessionCart', $cart);
     }
+
+    public function getTotal(){
+        $total = 0;
+
+        foreach($this->getCart() as $item){
+            $total += $item['product']->getPrice() * $item['quantity'];
+        }
+
+        return $total;
+    }
+
+
+    public function removeRow(Product $product){
+        $cart = $this->session->get('sessionCart', []);
+        $productId=$product->getId();
+
+        if(isset($cart[$productId])){
+            unset($cart[$productId]);
+        }
+
+        $this->session->set('sessionCart', $cart);
+    }
+
+    public function removeOne(Product $product){
+        $cart = $this->session->get('sessionCart', []);
+        $productId=$product->getId();
+
+        if(isset($cart[$productId]) ){
+            $cart[$productId]--;
+
+            if($cart[$productId] === 0){
+                unset($cart[$productId]);
+            }
+        }
+
+        $this->session->set('sessionCart', $cart);
+    }
+
+    public function empty(){
+        $this->session->remove('sessionCart');
+    }
+
+    public function count(){
+        $count= 0;
+        $cart = $this->session->get('sessionCart', []);
+
+        foreach($cart as $quantity){
+            $count+=$quantity;
+        }
+        return $count;
+
+    }
+
+
 
 
 
