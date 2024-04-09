@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
+use App\Entity\Profile;
 use App\Repository\OrderRepository;
 use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +23,15 @@ class OrderController extends AbstractController
         return $this->render('order/indexALL.html.twig', [
             'orders' => $orders,
         ]);
+    }
+
+    #[Route('/{id}/orders', name: 'app_order_profile')] //ajout /api
+    public function indexProfileOrders(Profile $profile): Response
+    {
+        $orders = $profile->getOrders();
+        dd($orders);
+
+        return $this->json($orders, 200, [], ['groups' => ['myOrders']]);
     }
 
     #[Route('/order/{id}', name: 'app_order_show')]
