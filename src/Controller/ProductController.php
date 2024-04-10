@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ProductController extends AbstractController
 {
-    #[Route('/admin/products', name: 'app_product_index', methods: ['GET'])]
+    #[Route('/admin/products', name: 'app_product_index')]
     public function index(ProductRepository $productRepository): Response
     {
         return $this->render('product/index.html.twig', [
@@ -24,7 +24,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product/new', name: 'app_product_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/product/new', name: 'app_product_new')]
     public function new(Request $request, EntityManagerInterface $entityManager, QrCodeGenerator $qrCodeGenerator): Response
     {
         $product = new Product();
@@ -50,7 +50,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product/{id}', name: 'app_product_show', methods: ['GET'])]
+    #[Route('/admin/product/{id}', name: 'app_product_show')]
     public function show(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
@@ -58,7 +58,13 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
+    #[Route('/product/{id}', name: 'one_product', methods: ['GET'])]
+    public function getProductById(Product $product): Response
+    {
+        return $this->json($product, 200, [], ['groups' => 'oneProduct']);
+    }
+
+    #[Route('/admin/product/{id}/edit', name: 'app_product_edit')]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, QrCodeGenerator $qrCodeGenerator): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -80,7 +86,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product/{id}', name: 'app_product_delete', methods: ['POST'])]
+    #[Route('/admin/product/{id}', name: 'app_product_delete')]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->getPayload()->get('_token'))) {

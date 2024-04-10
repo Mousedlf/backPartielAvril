@@ -14,15 +14,15 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["myOrders", "getProductWithQrCode"])]
+    #[Groups(["myOrders", "getProductWithQrCode", 'oneProduct'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["myOrders", "getProductWithQrCode"])]
+    #[Groups(["myOrders", "getProductWithQrCode", 'oneProduct'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(["myOrders", "getProductWithQrCode"])]
+    #[Groups(["myOrders", "getProductWithQrCode", 'oneProduct'])]
     private ?float $price = null;
 
     #[ORM\Column(length: 1500)]
